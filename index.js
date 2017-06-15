@@ -10,7 +10,7 @@ const patterns = {
   svg: /svg$/i
 }
 
-function colorPalette (input, type, callback) {
+function colorPalette (input, type, colorCount, callback) {
   if (typeof type === 'function') {
     callback = type
     type = null
@@ -26,10 +26,10 @@ function colorPalette (input, type, callback) {
   }
 
   // PNG, GIF, JPG
-  return paletteFromBitmap(input, type, callback)
+  return paletteFromBitmap(input, type, colorCount, callback)
 }
 
-function paletteFromBitmap (filename, type, callback) {
+function paletteFromBitmap (filename, type, colorCount, callback) {
   if (!callback) {
     callback = type
     type = null
@@ -37,7 +37,7 @@ function paletteFromBitmap (filename, type, callback) {
 
   getPixels(filename, type, function (err, pixels) {
     if (err) return callback(err)
-    const palette = getRgbaPalette(pixels.data, 5).map(function (rgba) {
+    const palette = getRgbaPalette(pixels.data, colorCount).map(function (rgba) {
       return chroma(rgba)
     })
 
